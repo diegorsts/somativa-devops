@@ -1,0 +1,25 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests before deploy
+        run: pytest test_app.py -v
+
+      - name: Deploy
+        run: echo "Deploying version $(date +%Y%m%d%H%M%S) to production..."
